@@ -18,8 +18,8 @@ app.use((err, rej, resp, next) => {
 })
 
 
-const DB_HOST = 'mongodb+srv://Oleksandr:ioL5egGNqrTIDKg0@cluster0.dgvgmai.mongodb.net/my-movies?retryWrites=true&w=majority&appName=Cluster0'
-mongoose.connect(DB_HOST)
+
+mongoose.connect(process.env.DB_HOST)
 .then(() => {
     app.listen(3000, () => {
         console.log('Server 3000 runing');
