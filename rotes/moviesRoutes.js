@@ -1,11 +1,13 @@
 import express from 'express';
 import { add, deleteMovie, getAll, getById, updateId } from '../controllers/moviesController.js';
 import emptyMiddleware from '../middlewares/emptyMiddleware.js';
+import isValideId from '../middlewares/isValideId.js';
+
 const moviesRouter = express.Router();
 
 moviesRouter.get("/", getAll);
-moviesRouter.get("/:id", getById)
+moviesRouter.get("/:id", isValideId, getById)
 moviesRouter.post("/", add)
-moviesRouter.put("/:id", emptyMiddleware, updateId)
-moviesRouter.delete("/:id", deleteMovie)
+moviesRouter.put("/:id",isValideId, emptyMiddleware, updateId)
+moviesRouter.delete("/:id",isValideId, deleteMovie)
 export default moviesRouter;
