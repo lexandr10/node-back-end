@@ -27,8 +27,13 @@ const MovieSchema = new Schema( {
         type: String,
         match: realeseYearRegexp,
         required: true
+     },
+     owner: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: "user"
      }
-});
+}, {versionKey: false, timestamps: true});
 
 MovieSchema.pre("findOneAndUpdate", setUpSetting)
 

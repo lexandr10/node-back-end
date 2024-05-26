@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import moviesRouter from './rotes/moviesRoutes.js';
 import mongoose from 'mongoose';
 import "dotenv/config";
+import authRouter from './rotes/authRouter.js';
 const app = express();
 
 
@@ -13,11 +14,12 @@ app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/auth", authRouter)
 app.use("/api/movies", moviesRouter);
 
 
-app.use((err, rej, resp, next) => {
-    const {status = 500, message = "Problem with server"} = err;
+app.use((error, rej, resp, next) => {
+    const {status = 500, message = "Problem with server"} = error;
     resp.status(status).json({message})
 })
 

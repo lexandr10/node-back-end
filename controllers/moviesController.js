@@ -4,7 +4,13 @@ import { movieAddSchema, moviePutSchem } from "../schema/moviesSchema.js";
 
 export const getAll = async(rej, res, next) => {
     try {
-     const result = await serviseMovies.getMovies();
+        const {_id: owner} = rej.user;
+        const filter = {owner};
+        const fields = "-createAt -updateAt";
+        const {limit = 1, page = 1} = rej.query;
+        const skip = (page - 1) * limit;
+        const settings = {skip, limit}
+     const result = await serviseMovies.getMovies({filter, fields, settings});
      res.json(result);
     } catch (error) {
         next(error);
@@ -29,13 +35,14 @@ export const getById = async(rej, res, next) => {
 
 export const add = async(req,res, next) => {
     try {
+        const {_id: owner} = req.user;
         const {error} = movieAddSchema.validate(req.body);
         if(error) {
             const err = new Error(`${error.message}`)
             err.status = 404;
             throw err;
         }
-        const newMovie = await serviseMovies.addMovie(req.body);
+        const newMovie = await serviseMovies.addMovie({...req.body, owner});
         res.status(201).json(newMovie);
     } catch (error) {
         next(error);
